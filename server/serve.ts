@@ -19,7 +19,10 @@ const remixHandler = createRequestHandler({
         viteDevServer.ssrLoadModule(
           "virtual:remix/server-build",
         ) as Promise<ServerBuild>
-    : ((await import(
+    : // @ts-ignore the types here are correct but the typechecker
+      // fails when build files are present because they are plain JS
+      // and the inferred type is incorrect.
+      ((await import(
         // @ts-ignore this file may not exist at the time of typechecking
         "../build/server/index.js"
       )) as () => Promise<ServerBuild>),
